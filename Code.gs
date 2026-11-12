@@ -43,6 +43,27 @@ function doGet() {
     .addMetaTag('viewport', 'width=device-width, initial-scale=1, viewport-fit=cover');
 }
 
+/**
+ * API JSON untuk frontend yang dihoskan di luar Apps Script (cth GitHub Pages).
+ * Badan permintaan: {"fn": "login", "args": [...]}. Hanya fungsi dalam senarai ini boleh dipanggil.
+ */
+var API = {
+  login: login, resume: resume, logout: logout, changePassword: changePassword, sync: sync,
+  adminDashboard: adminDashboard, adminSaveUser: adminSaveUser, adminResetPassword: adminResetPassword,
+  adminBulkAdd: adminBulkAdd, adminSetConfig: adminSetConfig
+};
+function doPost(e) {
+  var out;
+  try {
+    var req = JSON.parse((e && e.postData && e.postData.contents) || '{}');
+    if (!Object.prototype.hasOwnProperty.call(API, req.fn)) throw new Error('Fungsi tidak dikenali.');
+    out = { ok: true, data: API[req.fn].apply(null, Array.isArray(req.args) ? req.args : []) };
+  } catch (err) {
+    out = { ok: false, error: String((err && err.message) || err) };
+  }
+  return ContentService.createTextOutput(JSON.stringify(out)).setMimeType(ContentService.MimeType.JSON);
+}
+
 function onOpen() {
   SpreadsheetApp.getUi().createMenu('RAIS')
     .addItem('Sediakan sistem (setup)', 'setup')

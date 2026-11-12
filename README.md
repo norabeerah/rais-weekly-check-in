@@ -22,19 +22,29 @@ Dibina dengan HTML, CSS dan JavaScript vanilla, tanpa library luar.
 | Fail | Kegunaan |
 |---|---|
 | `Code.gs` | Backend Apps Script: log masuk, peranan, simpan data, API dashboard |
-| `Index.html` | Antara muka (peserta + admin). Dibuka terus dalam browser, ia berjalan dalam mod demo dengan data contoh. |
+| `index.html` | Antara muka (peserta + admin). Sama fail untuk Apps Script dan GitHub Pages. Tanpa `API_URL`, ia berjalan dalam mod demo dengan data contoh. |
 | `appsscript.json` | Manifest projek (zon waktu Asia/Kuala_Lumpur, runtime V8, tetapan web app) |
 
 ## Pemasangan
 
 1. Cipta Google Sheet baharu, cth "RAIS Check-In DB".
 2. **Extensions → Apps Script.** Tampal `Code.gs`.
-3. Tambah fail HTML bernama tepat **`Index`** dan tampal `Index.html`.
+3. Tambah fail HTML bernama tepat **`Index`** dan tampal kandungan `index.html`.
 4. Dalam `Code.gs`, tetapkan emel admin dalam `ADMIN_AWAL`. Biarkan `kataLaluan` kosong untuk kata laluan rawak, atau isi sendiri di editor (jangan commit kata laluan sebenar ke repo).
 5. Pilih fungsi **`setup`** → **Run**. Execution log akan papar emel admin dan kata laluan sementara.
 6. **Deploy → New deployment → Web app.** Execute as: *Me*. Who has access: *Anyone*.
 7. Edarkan URL yang berakhir dengan **`/exec`** kepada peserta. URL `/dev` hanya berfungsi untuk pemilik dan editor skrip.
 8. Log masuk sebagai admin, tukar kata laluan, tetapkan tarikh mula program (tab Akaun), kemudian daftar peserta (tab Pengguna).
+
+### Hos di GitHub Pages (pilihan)
+
+Halaman yang sama boleh dihoskan di `https://<pengguna>.github.io/rais-weekly-check-in/` dan bercakap dengan Apps Script melalui `doPost`.
+
+1. Siapkan langkah 1–6 di atas dan salin URL `/exec`.
+2. Dalam `index.html`, isi `var API_URL='https://script.google.com/macros/s/.../exec';` dan commit.
+3. Repo **Settings → Pages → Deploy from a branch → `main` / root**.
+
+Data tetap disimpan dalam Google Sheet yang sama. URL `/exec` juga masih boleh dibuka terus.
 
 Selepas mengubah kod: **Deploy → Manage deployments → Edit → Version: New version → Deploy.**
 
